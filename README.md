@@ -3,7 +3,7 @@
 A small desktop download manager written in Go with a vanilla JavaScript UI,
 built with [Wails v2](https://wails.io/).
 
-This test build supports HTTP and HTTPS downloads.
+This test build supports HTTP and HTTPS downloads on Linux, Windows and macOS.
 
 ## Features
 
@@ -45,6 +45,50 @@ make build    # produces build/bin/EasyDownload
 make test     # engine integration tests
 make test-race
 ```
+
+## Launching without `make`
+
+Once built, you can launch the app directly. The shortcuts below point at
+`build/bin/EasyDownload`, so a later `make build` updates what launches.
+
+**Linux**
+
+- Add a desktop entry to launch it from your application menu:
+
+  ```bash
+  mkdir -p ~/.local/share/applications
+  cat > ~/.local/share/applications/easydownload.desktop <<EOF
+  [Desktop Entry]
+  Type=Application
+  Name=EasyDownload
+  Exec=$PWD/build/bin/EasyDownload
+  Icon=$PWD/build/appicon.png
+  Terminal=false
+  Categories=Network;FileTransfer;
+  EOF
+  update-desktop-database ~/.local/share/applications
+  ```
+
+- Or add a shell shortcut so you can just type `easydownload`:
+
+  ```bash
+  ln -s "$PWD/build/bin/EasyDownload" ~/.local/bin/easydownload
+  ```
+
+  (`~/.local/bin` must be on your `PATH`.)
+
+**Windows**
+
+Extract `EasyDownload-*-windows-amd64.zip` and right-click `EasyDownload.exe`
+→ *Pin to Start* or *Pin to taskbar*. Windows 10/11 includes the WebView2
+runtime; older systems need the [WebView2 runtime](https://developer.microsoft.com/microsoft-edge/webview2/)
+installed.
+
+**macOS**
+
+Extract `EasyDownload-*-macos-universal.zip` and drag `EasyDownload.app` into
+`/Applications`. If macOS blocks it, run `xattr -cr /Applications/EasyDownload.app`
+once (the binaries are unsigned).
 
 ## Portable builds
 
@@ -94,4 +138,4 @@ and `download:error` events to the frontend over the Wails event bus.
 ## Not included in this test build
 
 BitTorrent/magnet, FTP/SFTP, mirrors, per-download speed limits, scheduling,
-browser integration, Windows/macOS builds.
+browser integration.
