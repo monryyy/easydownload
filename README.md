@@ -1,4 +1,4 @@
-# EasyDownload (test build)
+# EasyDownload
 
 A small desktop download manager written in Go with a vanilla JavaScript UI,
 built with [Wails v2](https://wails.io/).
